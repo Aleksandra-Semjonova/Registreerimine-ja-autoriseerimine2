@@ -1,11 +1,12 @@
 from module1 import * 
+
 kasutaja=[]
 paroolid=[]
 while True:
     operatsioon=print("Registreerimine(R)\nAutoriseerimine(A)\nNime või parooli muutmine(M)\nUnustanud parooli taastamine(U)\nLõpetamine(L)")
     vastus=str(input()).capitalize()
     if vastus=="R":
-        uus_nimi,uus_parool=registreerimine(kasutaja,paroolid)
+        registreerimine(kasutaja,paroolid)
         print(kasutaja,paroolid)
         print("")
     elif vastus=="A":

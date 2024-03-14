@@ -44,8 +44,8 @@ def autoriseerimine(k: list, p: list) -> bool:
     :rtype: bool
     """
     while True:
-        kasutajas=input("Sisesta kasutajanimi: ")
-        parool=input("Sisesta parool: ")
+        kasutajas=input("Kirjutage kasutajanimi: ")
+        parool=input("Kirjutagparool: ")
         if kasutajas in k and parool==p[k.index(kasutajas)]:
             print("Olete sisse logitud.")
             print("")
@@ -73,8 +73,8 @@ def muuda_parool(k:list,p:list)->any:
             break
 
     while True:
-        muutmine=input("Mida soovite oma nime või parooli muuta?: ")
-        if muutmine=="nime":
+        muuda=input("Mida soovite oma nime või parooli muuta?(nimi/parool): ")
+        if muuda=="nimi":
             uus_kasutaja=input("Sisesta uus nimi: ")
             if  uus_kasutaja in k:
                 print("See nimi on juba kasutusel.")
@@ -85,7 +85,7 @@ def muuda_parool(k:list,p:list)->any:
                 print("Nimi edukalt muudetud.")
                 print("")
                 break
-        elif muutmine=="parool":
+        elif muuda=="parool":
             parool_uus=input("Sisesta uus parool: ")
             if parool_uus=="":
                 print("Parool ei saa olla tühi.")
@@ -97,7 +97,7 @@ def muuda_parool(k:list,p:list)->any:
                 print("")
                 break
         else:
-            print("Vigane valik. Palun vali 'N' või 'P'.")
+            print("Vigane valik. Palun vali 'nimi' või 'parool'.")
             print("")  
 
 
@@ -123,8 +123,8 @@ def unustatud_parool(k: list, p: list) -> None:
             index = k.index(nimi)
             break
 
-    email = input("Sisesta oma e-posti aadress: ")
-    if email == "":
+    email= input("Sisesta oma e-posti aadress: ")
+    if email== "":
         print("E-posti aadress ei saa olla tühi.")
         return
 
