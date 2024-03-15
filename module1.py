@@ -1,46 +1,85 @@
 import random
 
-def registreerimine(k:list,p:list)->any:
+def kirjuta_failisse(fail:str, jÃ¤rjend=[], jÃ¤rjend2=[]):
+    """ Funktsion Ã¼mber kirjutab andmed failisse
+    :param str fail: Faili nimi
+    :param list jÃ¤rjend: esimene jÃ¤rjend
+    :param list jÃ¤rjend2: teine jÃ¤rjend
+    :rtype: any
+    """
+    existing_data = []
+    try:
+        with open(fail, 'r', encoding="utf-8") as v:
+            for line in v:
+                existing_data.append(line.strip())
+    except FileNotFoundError:
+        pass
+
+    with open(fail, 'a', encoding="utf-8") as f:
+        for i in range(len(jÃ¤rjend)):
+            nimi = str(jÃ¤rjend[i])
+            parool = str(jÃ¤rjend2[i])
+            entry = nimi + ": " + parool + "\n"
+            if not any(nimi in line for line in existing_data):
+                f.write(entry)
+    return jÃ¤rjend
+
+
+def loe_pas_log(fail:str)-> any:
+
+    log = []
+    pas = []
+    with open(fail, "r", encoding="utf-8") as f: 
+        for line in f:
+            n = line.find(":")
+            log.append(line[0:n].strip())
+            pas.append(line[n+1:].strip())
+    return log, pas
+
+def registreerimine(k:list,p:list)-> any:
 
     """ 
     Funktsioon loob uue kasutaja
-    :param list k: kasutajas järjend
-    :param list p: parool järjend
+    :param list k: kasutajas jÃ¤rjend
+    :param list p: parool jÃ¤rjend
     :rtype: any
     """
     while True:
-        nimi=input("Sisesta kasutajanimi: ")
-        if nimi=="":
-            print("Kasutajanimel peab olema nimi.")
-            print("")
-        elif nimi in k:
-            print("See nimi on hõivatud, proovige teist.")
+        result = loe_pas_log("Parool.txt")
+        if result is None:
+            log, pas = [], []
+        else:
+            log, pas = result
+        nimi = input("Sisesta nimi: ")
+        if nimi in log:
+            print("See nimi on juba registreeritud.")
             print("")
         else:
-            break
-    
+            break 
     while True:
-        parool=input("Sisesta parool: ")
-        str0=".,:;!_*-+()/#¤%&"
-        str1='0123456789'
-        str2='qwertyuiopasdfghjklzxcvbnm'
-        str3=str2.upper()
-        str4=str0 + str1 + str2 + str3
-        ls=list(str4)
-        random.shuffle(ls)
-        parool=''.join([random.choice(ls) for x in range(12)])
-       
-        if parool=="":
-            print("Parool ei saa olla tühi.")
-            print("")
+        valik = input("kas soovite parooli kirjutada(K) vÃµi selle genereerida?(G) ")
+        if valik=="K":
+            parool=input("Parool: ")
+        elif valik=="G":
+            str0 = ".,:;!_*-+()/#Â¤%&"
+            str1 = '0123456789'
+            str2 = 'qwertyuiopasdfghjklzxcvbnm'
+            str3 = str2.upper()
+            str4 = str0 + str1 + str2 + str3
+            lt = list(str4)
+            random.shuffle(lt)
+            parool = ''.join([random.choice(lt) for x in range(12)])
         else:
-            break
+            print("Palun vali 'sisesta' vÃµi 'gener'")
+            print("")
+            continue
+
 def autoriseerimine(k: list, p: list) -> bool:
     """
-    Autoriseerib kasutaja süsteemi tagasi.
+    Autoriseerib kasutaja sÃ¼steemi tagasi.
 
-    :param list k: kasutajas järjend
-    :param list p: parool järjend
+    :param list k: kasutajas jÃ¤rjend
+    :param list p: parool jÃ¤rjend
     :rtype: bool
     """
     while True:
@@ -51,15 +90,15 @@ def autoriseerimine(k: list, p: list) -> bool:
             print("")
             return True
         else:
-            print("Vigane kasutajanimi või parool,proovi uuesti.")
+            print("Vigane kasutajanimi vÃµi parool,proovi uuesti.")
             print("")
 
 def muuda_parool(k:list,p:list)->any:
     """
     Muudab kasutaja parooli.
 
-    :param list k: kasutajas järjend
-    :param list p: Parool järjend
+    :param list k: kasutajas jÃ¤rjend
+    :param list p: Parool jÃ¤rjend
     :rtype: any
     """
     while True:
@@ -73,7 +112,7 @@ def muuda_parool(k:list,p:list)->any:
             break
 
     while True:
-        muuda=input("Mida soovite oma nime või parooli muuta?(nimi/parool): ")
+        muuda=input("Mida soovite oma nime vÃµi parooli muuta?(nimi/parool): ")
         if muuda=="nimi":
             uus_kasutaja=input("Sisesta uus nimi: ")
             if  uus_kasutaja in k:
@@ -88,7 +127,7 @@ def muuda_parool(k:list,p:list)->any:
         elif muuda=="parool":
             parool_uus=input("Sisesta uus parool: ")
             if parool_uus=="":
-                print("Parool ei saa olla tühi.")
+                print("Parool ei saa olla tÃ¼hi.")
                 print("")
                 continue
             else:
@@ -97,7 +136,7 @@ def muuda_parool(k:list,p:list)->any:
                 print("")
                 break
         else:
-            print("Vigane valik. Palun vali 'nimi' või 'parool'.")
+            print("Vigane valik. Palun vali 'nimi' vÃµi 'parool'.")
             print("")  
 
 
@@ -110,8 +149,8 @@ def unustatud_parool(k: list, p: list) -> None:
     """
     Saadab unustatud parooli e-kirja kasutajale.
 
-    :param list k: kasutajas järjend
-    :param list p: Parool järjend
+    :param list k: kasutajas jÃ¤rjend
+    :param list p: Parool jÃ¤rjend
     """
     while True:
         nimi = input("Sisesta oma kasutajanimi: ")
@@ -125,7 +164,7 @@ def unustatud_parool(k: list, p: list) -> None:
 
     email= input("Sisesta oma e-posti aadress: ")
     if email== "":
-        print("E-posti aadress ei saa olla tühi.")
+        print("E-posti aadress ei saa olla tÃ¼hi.")
         return
 
     port = 587

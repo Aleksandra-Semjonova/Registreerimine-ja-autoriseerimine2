@@ -3,20 +3,20 @@ from module1 import *
 kasutaja=[]
 paroolid=[]
 while True:
-    operatsioon=print("Registreerimine(R)\nAutoriseerimine(A)\nNime või parooli muutmine(M)\nUnustanud parooli taastamine(U)\nLõpetamine(L)")
+    operatsioon=print("Registreerimine-1\nAutoriseerimine-2\nNime vÃµi parooli muutmine-3\nUnustanud parooli taastamine-4\nLÃµpetamine-5")
     vastus=str(input()).capitalize()
-    if vastus=="R":
-        registreerimine(kasutaja,paroolid)
+    if vastus=="1":
+        kasutaja, paroolid=registreerimine(kasutaja,paroolid)
         print(kasutaja,paroolid)
         print("")
-    elif vastus=="A":
+    elif vastus=="2":
         autoriseerimine(kasutaja,paroolid)
-    elif vastus=="M":
+    elif vastus=="3":
         muuda_parool(kasutaja,paroolid)
         print(kasutaja,paroolid)
-    elif vastus=="U":
+    elif vastus=="4":
         unustatud_parool(kasutaja,paroolid)
-    elif vastus=="L":
+    elif vastus=="5":
         break
     else:
         print("Palun vali toiming siit nimekirjast")
